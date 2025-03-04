@@ -1,0 +1,35 @@
+version: "1.0"
+
+name: entity-comparison-server
+description: An MCP server for comparing entity data using both text matching and LLM analysis
+
+build:
+  dockerfile: Dockerfile
+  context: .
+
+service:
+  port: 8000
+  protocol: http
+
+environment:
+  - name: GOOGLE_API_KEY
+    description: "Google API Key for Gemini models"
+    required: true
+
+healthcheck:
+  path: /jsonrpc
+  method: POST
+  interval: 30s
+  timeout: 10s
+  retries: 3
+  body: |
+    {
+      "jsonrpc": "2.0",
+      "method": "ping",
+      "params": {},
+      "id": 1
+    }
+
+resources:
+  cpu: "1"
+  memory: "1Gi"
