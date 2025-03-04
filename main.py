@@ -1,11 +1,15 @@
+from flask import Flask, request, jsonify
 from mcp.server import FastMCP
 import google.generativeai as genai
 import json
 import re
 from typing import Dict, Any
 
+# Initialize Flask app
+flask_app = Flask(__name__)
+
 # Initialize FastMCP server
-app = FastMCP('entity-comparison')
+mcp_server = FastMCP('entity-comparison')
 
 def normalize_text(text: str) -> str:
     """
@@ -37,18 +41,10 @@ def compare_values(val1: Any, val2: Any) -> tuple[bool, bool]:
     
     return exact_equal, semantic_equal
 
-@app.tool()
+@mcp_server.tool()
 async def compare_entities(json1: Dict[str, Any], json2: Dict[str, Any], api_key: str) -> Dict[str, Any]:
     """
     比较两个实体的JSON数据，使用Gemini进行语义相似度分析
-    
-    Args:
-        json1: 第一个实体的JSON数据
-        json2: 第二个实体的JSON数据 
-        api_key: Google API Key
-
-    Returns:
-        包含比较结果的字典
     """
     # Configure Gemini API
     genai.configure(api_key=api_key)
@@ -100,5 +96,23 @@ async def compare_entities(json1: Dict[str, Any], json2: Dict[str, Any], api_key
         "final_analysis": final_result.text
     }
 
+@flask_app.route('/jsonrpc', methods=['POST'])
+def handle_jsonrpc():
+    """Handle JSON-RPC requests via HTTP"""
+    try:
+        request_data = request.get_json()
+        response = mcp_server.handle_jsonrpc(request_data)
+        return jsonify(response)
+    except Exception as e:
+        return jsonify({
+            "jsonrpc": "2.0",
+            "error": {
+                "code": -32603,
+                "message": f"Internal error: {str(e)}"
+            },
+            "id": request_data.get("id")
+        }), 500
+
 if __name__ == "__main__":
-    app.run()
+    # Run Flask app
+    flask_app.run(host='0.0.0.0', port=8000)
