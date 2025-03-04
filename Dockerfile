@@ -7,7 +7,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # Copy application code
-COPY entity_comparison_server.py .
+COPY main.py .
 
 # Expose the port the app runs on
 EXPOSE 8000
