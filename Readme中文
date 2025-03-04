@@ -1,0 +1,94 @@
+# Entity Comparison MCP Server
+
+这个 MCP 服务器提供了实体比较功能，可以比较两个 JSON 格式的实体数据，判断它们是否可能是同一主体。
+
+## 功能特点
+
+- 精确比较：直接对比原始数据
+- 语义比较：对标准化后的文本进行比较
+- LLM 分析：使用 Google Gemini 模型进行语义相似度分析
+- 综合判断：提供最终的同一主体判断结果
+
+## 使用方法
+
+### 工具
+
+服务器提供了一个主要工具：`compare_entities`
+
+参数:
+- json1: 第一个实体的 JSON 数据
+- json2: 第二个实体的 JSON 数据
+- api_key: Google API Key
+
+返回:
+```json
+{
+    "field_comparisons": {
+        "field_name": {
+            "exact_equal": true/false,
+            "semantic_equal": true/false,
+            "LLM_equal": "true/false",
+            "value1": "原始值1",
+            "value2": "原始值2"
+        }
+    },
+    "final_analysis": "综合分析结果"
+}
+```
+
+### 示例
+
+```python
+from mcp import Client
+
+# 连接到 MCP 服务器
+client = Client()
+server = client.connect_server('entity-comparison')
+
+# 准备数据
+json1 = {
+    "name": "北京科技有限公司",
+    "address": "北京市海淀区中关村大街1号"
+}
+
+json2 = {
+    "name": "北京科技公司",
+    "address": "北京海淀中关村1号"
+}
+
+# 调用比较工具
+result = server.compare_entities(
+    json1=json1,
+    json2=json2,
+    api_key="your-google-api-key"
+)
+
+print(json.dumps(result, ensure_ascii=False, indent=2))
+```
+
+## 安装与运行
+
+1. 安装依赖
+```bash
+pip install mcp google-generativeai
+```
+
+2. 运行服务器
+```bash
+python entity_comparison_server.py
+```
+
+## 注意事项
+
+- 需要提供有效的 Google API Key
+- JSON 数据中的字段需要保持一致性
+- 建议在处理大量数据时考虑 API 调用限制
+
+## Contact
+
+If you have any questions or suggestions, please contact me:
+- Email: u3588064@connect.hku.hk
+- GitHub: [u3588064@connect.hku.hk](mailto:u3588064@connect.hku.hk)。
+
+Wechat
+![qrcode_for_gh_643efb7db5bc_344(1)](https://github.com/u3588064/LLMemory/assets/53069671/8bb26c0f-4cab-438b-9f8c-16b1c26b3587)
