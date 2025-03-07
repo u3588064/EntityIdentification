@@ -8,6 +8,18 @@ from typing import Dict, Any
 # Initialize Flask app
 flask_app = Flask(__name__)
 
+# Configure logging
+logHandler = logging.StreamHandler()
+formatter = jsonlogger.JsonFormatter()
+logHandler.setFormatter(formatter)
+app.logger.addHandler(logHandler)
+app.logger.setLevel(logging.INFO)
+
+# Suppress the default Flask logger
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
+
+
 # Initialize FastMCP server
 mcp_server = FastMCP('entity-comparison')
 
@@ -115,4 +127,4 @@ def handle_jsonrpc():
 
 if __name__ == "__main__":
     # Run Flask app
-    flask_app.run(host='0.0.0.0', port=8000)
+    flask_app.run(host='0.0.0.0', port=8000，debug=True)
