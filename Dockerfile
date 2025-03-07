@@ -13,4 +13,4 @@ COPY main.py .
 EXPOSE 8000
 
 # Command to run the application
-CMD ["python", "entity_comparison_server.py"]
+CMD ["python", "main.py"]
