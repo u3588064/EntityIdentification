@@ -1,6 +1,6 @@
-# EntityRecognition
-Recognize whether two sets of data are from the same entity. 识别两组数据是否来自同一主体
-
+# EntityIdentification
+Identify whether two sets of data are from the same entity. 识别两组数据是否来自同一主体
+This is a MCP (Model Context Protocol) server. 这是一个支持MCP协议的服务器。
 
 
 # Data Comparison Tool
