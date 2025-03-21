@@ -1,17 +1,18 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
 
-# Smithery.ai configuration
 startCommand:
   type: stdio
   configSchema:
-   # type: object
-   # required:
-      #- googleApiKey
-   # properties:
-      #googleApiKey:
-      #  type: string
-      #  description: The API key for Google Gemini.
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - googleApiKey
+    properties:
+      googleApiKey:
+        type: string
+        description: The API key for Google Gemini.
   commandFunction:
-    # A function that produces the CLI command to start the MCP on stdio.
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
     |-
     (config) => ({
       "command": "python",
@@ -19,6 +20,6 @@ startCommand:
         "main.py"
       ],
       "env": {
-        # GOOGLE_API_KEY: config.googleApiKey
+        GOOGLE_API_KEY: config.googleApiKey
       }
     })
