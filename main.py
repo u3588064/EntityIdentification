@@ -108,23 +108,8 @@ async def compare_entities(json1: Dict[str, Any], json2: Dict[str, Any], api_key
         "final_analysis": final_result.text
     }
 
-@flask_app.route('/jsonrpc', methods=['POST'])
-def handle_jsonrpc():
-    """Handle JSON-RPC requests via HTTP"""
-    try:
-        request_data = request.get_json()
-        response = mcp_server.handle_jsonrpc(request_data)
-        return jsonify(response)
-    except Exception as e:
-        return jsonify({
-            "jsonrpc": "2.0",
-            "error": {
-                "code": -32603,
-                "message": f"Internal error: {str(e)}"
-            },
-            "id": request_data.get("id")
-        }), 500
+
 
 if __name__ == "__main__":
     # Run Flask app
-    flask_app.run(host='0.0.0.0', port=8000,debug=True)
+    mcp_server.run()
