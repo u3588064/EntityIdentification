@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Install Playwright browsers
-RUN playwright install
+# RUN playwright install
 
 # Entrypoint to start the server
 CMD ["python", "main.py"]
