@@ -3,17 +3,22 @@
 startCommand:
   type: stdio
   configSchema:
-    # JSON Schema defining the configuration options for the MCP.
-    {}
+    type: object
+    required:
+      - googleApiKey
+    properties:
+      googleApiKey:
+        type: string
+        description: The API key for Google Gemini.
   commandFunction:
     # A function that produces the CLI command to start the MCP on stdio.
     |-
     (config) => ({
-      "command": "node",
+      "command": "python",
       "args": [
-        "dist/index.js"
+        "main.py"
       ],
       "env": {
-        
+        GOOGLE_API_KEY: config.googleApiKey
       }
     })
